@@ -10,8 +10,9 @@ import {
   Routes,
   Route,
   Link,
+  Outlet,
 } from "./mini-react-router";
-import './App.css';
+import "./App.css";
 export default function App(props) {
   return (
     <div className="app">
@@ -33,7 +34,7 @@ function Layout(props) {
       <Link to="/">首页</Link>
       <Link to="/product">商品</Link>
 
-      {/* <Outlet /> */}
+      <Outlet />
     </div>
   );
 }
