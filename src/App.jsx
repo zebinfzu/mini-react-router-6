@@ -1,15 +1,39 @@
-import "./App.css";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { BrowserRouter as Router, Routes, Route } from "./mini-react-router";
-function App() {
+// import {
+//   BrowserRouter as Router,
+//   Routes,
+//   Route,
+//   Link,
+//   Outlet,
+// } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+} from "./mini-react-router";
+import './App.css';
+export default function App(props) {
   return (
-    <div className="App">
+    <div className="app">
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="product" element={<Product />} />
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="product" element={<Product />} />
+          </Route>
         </Routes>
       </Router>
+    </div>
+  );
+}
+
+function Layout(props) {
+  return (
+    <div className="border">
+      <Link to="/">首页</Link>
+      <Link to="/product">商品</Link>
+
+      {/* <Outlet /> */}
     </div>
   );
 }
@@ -29,5 +53,3 @@ function Product() {
     </div>
   );
 }
-
-export default App;

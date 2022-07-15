@@ -1,5 +1,6 @@
-import BrowserRouter from './BrowserRouter'
-import Route from './Route'
-import Routes from './Routes'
+import BrowserRouter from "./BrowserRouter";
+import Routes from "./Routes";
+import Route from "./Route";
+import Link from "./Link";
 
-export {BrowserRouter, Route, Routes}
+export { BrowserRouter, Routes, Route, Link };
