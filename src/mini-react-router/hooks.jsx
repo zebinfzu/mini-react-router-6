@@ -1,40 +1,35 @@
 import React from "react";
+import { matchRoutes } from "react-router-dom";
 import { NavigationContext, RouteContext } from "./Context";
 import Outlet from "./Outlet";
 import { normalizePathname } from "./utils";
 export function useRoutes(routes) {
   const location = useLocation();
   const pathname = location.pathname;
+  // matchRouters将原来嵌套多层路由的数组用来拍平
+  console.log("routes", routes);
+  const matches = matchRoutes(routes, { pathname });
+  console.log("matches", matches); //sy-log
+  return renderMatches(matches);
+}
 
-  return routes.map((route) => {
-    // const match = pathname === route.path || pathname === "/" + route.path;
-    const match = pathname.startsWith(route.path);
-
-    // todo children
-    console.log("route", pathname, route); //sy-log
+function renderMatches(matches) {
+  if (matches === null) {
+    return null;
+  }
+  return matches.reduceRight((outlet, match) => {
     return (
-      match &&
-      route.children.map((child) => {
-        let m = normalizePathname(child.path) === pathname;
-
-        return (
-          m && (
-            <RouteContext.Provider
-              value={{ outlet: child.element }}
-              children={
-                route.element !== undefined ? route.element : <Outlet />
-              }
-            />
-          )
-        );
-      })
+      <RouteContext.Provider
+        value={{ outlet, matches }}
+        children={match.route.element || outlet}
+      />
     );
-  });
+  }, null);
 }
 
 export function useNavigate() {
   // 跳转
-  console.log(React.useContext(NavigationContext));
+  // console.log(React.useContext(NavigationContext));
   const { navigator } = React.useContext(NavigationContext);
 
   return navigator.push;
@@ -48,4 +43,11 @@ export function useLocation() {
 export function useOutlet() {
   const { outlet } = React.useContext(RouteContext);
   return outlet;
+}
+
+export function useParams() {
+  const { matches } = React.useContext(RouteContext);
+
+  const routeMatch = matches[matches.length - 1];
+  return routeMatch ? routeMatch.params : {};
 }
